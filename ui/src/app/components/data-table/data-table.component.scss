@@ -1,0 +1,61 @@
+.mat-column-edit, .mat-column-delete {
+  flex: 0 0 5% !important;
+}
+
+.example-container.mat-elevation-z8 {
+  overflow-x: auto !important;
+}
+.example-container .mat-table.mat-table {
+  //min-width: 700px !important;
+
+}
+
+.example-container {
+  //max-height: calc(100% - 20vh);
+  max-height: 600px;
+  overflow: auto;
+}
+
+.f-10
+{
+  font-size: 10px;
+}
+
+.m-10
+{
+  margin: 10px;
+}
+
+.mat-row:nth-child(even){
+  background-color:white;
+}
+
+.mat-row:nth-child(odd){
+  background-color:#ebebeb;
+}
+
+.mat-paginator-sticky {
+  bottom: 0px;
+  position: sticky;
+  z-index: 10;
+}
+
+#excel_button {
+  position: absolute;
+  top: -30px;
+  z-index: 99999;
+  left: 100px;
+}
+
+#print_button {
+  position: absolute;
+  top: -30px;
+  z-index: 99999;
+  left: 35px;
+}
+
+.wrap-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

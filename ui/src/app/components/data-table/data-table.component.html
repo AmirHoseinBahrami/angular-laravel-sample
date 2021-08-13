@@ -1,0 +1,176 @@
+<mat-card [ngStyle]="{'background': this.cardBackgroundTransparent ? 'transparent' : '' }"
+          style="padding-top: 0;margin-top: 3px;">
+    <mat-card-header>
+        <mat-form-field >
+            <input matInput  placeholder="برای جستجو عبارت خود را بنویسید">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="end center">
+            <button mat-fab title="خروجی اکسل"
+                    color="primary"
+                    id="excel_button"
+                    (click)="exporter.exportTable('xlsx', {
+                    fileName:this.model.excellExport.fileName,
+                    sheet:this.model.excellExport.sheet,
+                    Props:this.model.excellExport.Props})">
+                <mat-icon>import_export</mat-icon>
+            </button>
+        </div>
+        <br *ngIf="!this.model.dataTableHasSearch">
+    </mat-card-header>
+    <div class="example-container mat-elevation-z8" [ngStyle]="this.model.setGridStyle()">
+        <!-- <mat-paginator *ngIf="this.model.gridApiUrl && this.model.dataHasPaginate"
+                       class="mat-paginator-sticky"
+                       [length]="resultsLength"
+                       [pageIndex]="0"
+                       [pageSizeOptions]="pageSizeOptions"
+                       showFirstLastButtons
+                       (page)="pageChange()"
+                       style="background-color: rgba(216,219,212,0.53)">
+        </mat-paginator> -->
+
+        <mat-paginator *ngIf="!this.model.dataHasPaginate" [pageSizeOptions]="pageSizeOptions"
+                       class="mat-paginator-sticky"
+                       style="background-color: rgba(216,219,212,0.53)"
+                       showFirstLastButtons>
+        </mat-paginator>
+        <div class="example-loading-shade"
+             *ngIf="isLoadingResults">
+            <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+            <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+                اشکال در بارگذاری اطلاعات !!!
+            </div>
+        </div>
+        <div class="example-table-container">
+            <mat-table #table [dataSource]="ds"
+                       matTableExporter
+                       #exporter="matTableExporter"
+                       matSort matSortDisableClear matSortDirection="desc">
+                <!-- Checkbox Column -->
+                <ng-container matColumnDef="select">
+                    <mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                      color="primary"
+                                      [checked]="selection.hasValue() && isAllSelected()"
+                                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                      [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                                      color="primary"
+                                      (change)="$event ? selection.toggle(row) : null"
+                                      [checked]="selection.isSelected(row)"
+                                      [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
+                    </mat-cell>
+                    <ng-container *ngIf="hasFooter">
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef> ردیف</mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index;">
+                        <div *ngIf="this.model.dataHasPaginate">
+                            {{(paginator.pageSize * paginator.pageIndex) + (i + 1) }}
+                        </div>
+                        <div *ngIf="!this.model.dataHasPaginate">
+                            {{i + 1}}
+                        </div>
+                    </mat-cell>
+                    <ng-container *ngIf="hasFooter">
+                        <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container *ngFor="let column of this.model.columns ; let j = index;" matColumnDef="{{column.field}}">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.caption}} </mat-header-cell>
+                    <mat-cell *matCellDef="let element; let i = index">
+                        <div *ngIf="column.type" [ngSwitch]="column.type">
+                            <div *ngSwitchCase="'CheckBox'">
+                                <mat-slide-toggle *ngIf="column.data"
+                                                  [checked]="this.model.gridSwitchChecked(element, column.data) "
+                                                  (change)="this.model.gridOnSwitchClick(element, column.data)">
+                                </mat-slide-toggle>
+                                <mat-slide-toggle *ngIf="!column.data" [checked]="element[column.field]"
+                                                  (change)="this.model.gridOnSwitchClick(element, $event)">
+                                </mat-slide-toggle>
+                            </div>
+
+                            <div fxLayout="row" fxLayoutAlign="center center" *ngSwitchCase="'TextBoxButton'">
+                                <mat-form-field style="width: 40%">
+                                    <input [textContent]="this.textBoxButtonModelSet(element, column.data, i)"
+                                           [(ngModel)]="this.textBoxButtonModel[i]" matInput
+                                           (keyup)="textBoxButtonKeyUp($event, i)"
+                                           placeholder="{{column.value}}">
+                                </mat-form-field>
+                                <button mat-icon-button color="primary"
+                                        (click)="gridOnTextButtonClick(element, column.field, this, i)">
+                                    <mat-icon>{{column.icon}}</mat-icon>
+                                </button>
+                            </div>
+
+                            <div *ngSwitchCase="'Button'">
+                                <button mat-icon-button color="primary"
+                                        (click)="this.model.gridOnButtonClick(element, column.field, this)"
+                                        [disabled]="this.model.setGridColumnDisabled(column.field, element,  this)">
+                                    <mat-icon>{{column.icon}}</mat-icon>
+                                </button>
+                            </div>
+                            <div *ngSwitchDefault>
+                                {{element[column.field]}}
+                            </div>
+                        </div>
+                        <div *ngIf="!column.type" [ngClass]="{'wrap-text': wrapText}">
+                            {{element[column.field]}}
+                        </div>
+                    </mat-cell>
+                    <ng-container *ngIf="hasFooter">
+                        <mat-footer-cell *matFooterCellDef>
+                            {{this.model.getFooter(column.field)}}
+                        </mat-footer-cell>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container matColumnDef="edit">
+                    <mat-header-cell *matHeaderCellDef> ویرایش</mat-header-cell>
+                    <mat-cell *matCellDef="let element">
+                        <button mat-icon-button color="primary" (click)="edit(element)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </mat-cell>
+                    <ng-container *ngIf="hasFooter">
+                        <mat-footer-cell mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell mat-header-cell *matHeaderCellDef> حذف</mat-header-cell>
+                    <mat-cell mat-cell *matCellDef="let element; let i = index;">
+                        <button mat-icon-button color="warn" (click)="delete(element, i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                    <ng-container *ngIf="hasFooter">
+                        <mat-footer-cell mat-footer-cell *matFooterCellDef></mat-footer-cell>
+                    </ng-container>
+                </ng-container>
+
+                <ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+                </ng-container>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"
+                         [ngStyle]="this.model.setGridRowStyle(row)"></mat-row>
+                <ng-container *ngIf="hasFooter">
+                    <mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"
+                                    style="background-color: #cdf7ff"></mat-footer-row>
+                </ng-container>
+            </mat-table>
+        </div>
+
+
+    </div>
+</mat-card>
+
+
+
