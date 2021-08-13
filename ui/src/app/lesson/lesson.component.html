@@ -1,0 +1,14 @@
+<mat-card>
+<mat-card-header>
+  <h1>
+    فهرست دروس
+
+  </h1>
+
+</mat-card-header>
+
+<data-table *ngIf="this.model.columns && this.model.dataSource"
+                  [model]="this.model"
+                  (onRowEdit)=this.model.edit($event)
+></data-table>
+</mat-card>
