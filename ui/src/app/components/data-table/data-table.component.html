@@ -18,15 +18,6 @@
         <br *ngIf="!this.model.dataTableHasSearch">
     </mat-card-header>
     <div class="example-container mat-elevation-z8" [ngStyle]="this.model.setGridStyle()">
-        <mat-paginator *ngIf="this.model.dataHasPaginate"
-                       class="mat-paginator-sticky"
-                       [length]="resultsLength"
-                       [pageIndex]="0"
-                       [pageSizeOptions]="pageSizeOptions"
-                       showFirstLastButtons
-                       (page)="pageChange()"
-                       style="background-color: rgba(216,219,212,0.53)">
-        </mat-paginator>
         <div class="example-table-container">
             <mat-table #table [dataSource]="ds"
                        matTableExporter
@@ -112,6 +103,15 @@
                 </ng-container>
             </mat-table>
         </div>
+        <mat-paginator *ngIf="this.model.dataHasPaginate"
+                       class="mat-paginator-sticky"
+                       [length]="resultsLength"
+                       [pageIndex]="0"
+                       [pageSizeOptions]="pageSizeOptions"
+                       showFirstLastButtons
+                       (page)="pageChange()"
+                       style="background-color: rgba(216,219,212,0.53)">
+        </mat-paginator>
     </div>
 </mat-card>
 

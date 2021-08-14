@@ -24,7 +24,6 @@ export function getPersianPaginatorIntl() {
     paginatorIntl.previousPageLabel = 'قبلی';
     paginatorIntl.lastPageLabel = 'آخرین';
     paginatorIntl.firstPageLabel = 'اولین';
-
     paginatorIntl.getRangeLabel = persianRangeLabel;
 
     return paginatorIntl;
