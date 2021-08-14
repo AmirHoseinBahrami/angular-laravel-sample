@@ -1,3 +1,4 @@
+import { SpinnerOverlayComponent } from './components/spinner-overlay/spinner-overlay.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AppInjectorService } from './services/app-injector.service';
 import { DataTableComponent } from './components/data-table/data-table.component';
@@ -21,13 +22,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {ReactiveFormsModule} from '@angular/forms';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LessonComponent,
-    DataTableComponent
+    DataTableComponent,
+    SpinnerOverlayComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +50,9 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatSnackBarModule,
     MatPaginatorModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     AppInjectorService,
