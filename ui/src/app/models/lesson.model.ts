@@ -20,6 +20,16 @@ export class LessonModel extends BaseModel {
         });
     }
 
+    public gridSwitchChecked(data, colData) {
+      if(data.active == 1 )
+        return true;
+      return false;
+    }
+
+    public gridOnSwitchClick(data, colData) {
+      this.snackBar.openSnackBar('عالی');
+    }
+
 
     public columnsHeader(columns) {
         if (!columns) {

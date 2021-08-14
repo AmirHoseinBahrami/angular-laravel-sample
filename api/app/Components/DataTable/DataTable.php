@@ -11,8 +11,8 @@ class DataTable
         $this->dataTable = $dataTable;
     }
 
-    public function generate()
+    public function generate(array $data)
     {
-        return $this->dataTable->generateOutput();
+        return $this->dataTable->generateOutput($data);
     }
 }

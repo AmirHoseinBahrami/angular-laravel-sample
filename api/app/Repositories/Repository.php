@@ -20,13 +20,13 @@ class Repository implements RepositoryInterface
     }
 
     // data tabel method for generte data table from database
-    public function dbResourceDataTable()
+    public function dbResourceDataTable(array $data)
     {
         try {
             $dbResource = new DBResource();
             $dbResource->model = $this->model;
             $dataTable = new DataTable($dbResource);
-            $data = $dataTable->generate();
+            $data = $dataTable->generate($data);
             return $this->success("Data table",  $data);
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
@@ -39,4 +39,6 @@ class Repository implements RepositoryInterface
     {
         //
     }
+
+    //... delete update store and ...
 }

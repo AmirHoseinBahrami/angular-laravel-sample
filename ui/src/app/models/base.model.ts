@@ -1,7 +1,6 @@
 import { ExcellExportInterface } from './../interfaces/excell-export.interface';
 import { AppInjector } from './app-injector.model';
-import { DataTableComponent } from './../components/data-table/data-table.component';
-import { IDataTableHeader } from './data-table/data-table-header';
+import { IDataTableHeader } from '../interfaces/data-table/data-table';
 import { UIService } from './../services/ui.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SnackBarService } from './../services/snack-bar.service';
@@ -20,7 +19,6 @@ export class BaseModel {
     //
     apiUrl: string;
     gridApiUrl: string;
-    additionalGridWhere: string;
     crudService: CrudService;
     uiService: UIService;
     dataSource: any[];
@@ -32,13 +30,11 @@ export class BaseModel {
     route: ActivatedRoute;
     dialog: MatDialog;
     dataTableHasSearch: boolean;
-    dataTableComponent: DataTableComponent;
     setDataTableAllPage: boolean;
     excellExport: ExcellExportInterface;
 
     constructor() {
         const injector = AppInjector.getInjector();
-        this.additionalGridWhere = '';
         this.editMode = false;
         this.crudService = injector.get(CrudService);
         this.uiService = injector.get(UIService);
@@ -46,8 +42,8 @@ export class BaseModel {
         this.route = injector.get(ActivatedRoute);
         this.snackBar = injector.get(SnackBarService);
         this.dialog = injector.get(MatDialog);
-        this.gridApiUrl = '/lesson';
-        this.dataHasPaginate = false;//local pagination
+        this.gridApiUrl = '';
+        this.dataHasPaginate = true;
         this.dataTableHasSearch = true;
         this.setDataTableAllPage = false;
         this.excellExport={

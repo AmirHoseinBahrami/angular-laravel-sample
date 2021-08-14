@@ -48,7 +48,7 @@ class Lesson extends Model
             'caption' => 'وضعیت',
             'field' => 'active',
             'width' => 20,
-            'controlType' => 'CheckBox'
+            'type' => 'CheckBox'
         ),
     );
 

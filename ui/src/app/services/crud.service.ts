@@ -24,7 +24,7 @@ export class CrudService {
               public dialog: MatDialog) {
   }
 
-  get(url, onSuccess: (data) => void, onError: (data) => void = null) {
+  get(url, onSuccess: (data) => void, onError: (data) => void = null, subscribe : boolean = false) {
     this.uiService.showSpinner.next(true);
     return this.http.get(url, {headers: httpOptions.headers, responseType: 'json'}
       )
@@ -41,7 +41,7 @@ export class CrudService {
           }
         },
         error => {
-          this.snackBar.openSnackBar('خطا : ' + error.error, 'تایید');
+          this.snackBar.openSnackBar('خطا : ' + error.error.message, 'تایید');
             this.uiService.showSpinner.next(false);
         }
       );
