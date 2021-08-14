@@ -9,6 +9,7 @@ import { ActivatedRoute } from '@angular/router';
 import {FormBuilder, FormGroup, FormGroupDirective} from '@angular/forms';
 import {Route, Router} from '@angular/router';
 
+/* All models inherit from this model */
 
 export class BaseModel {
   //all models fix property
@@ -17,8 +18,7 @@ export class BaseModel {
     created_at: string;
     active: boolean;
     //
-    apiUrl: string;
-    gridApiUrl: string;
+    apiUrl: string; // set api url for each model
     crudService: CrudService;
     uiService: UIService;
     dataSource: any[];
@@ -26,9 +26,6 @@ export class BaseModel {
     dataHasPaginate: boolean;
     editMode: boolean;
     snackBar: SnackBarService;
-    router: Router;
-    route: ActivatedRoute;
-    dialog: MatDialog;
     dataTableHasSearch: boolean;
     setDataTableAllPage: boolean;
     excellExport: ExcellExportInterface;
@@ -38,11 +35,7 @@ export class BaseModel {
         this.editMode = false;
         this.crudService = injector.get(CrudService);
         this.uiService = injector.get(UIService);
-        this.router = injector.get(Router);
-        this.route = injector.get(ActivatedRoute);
         this.snackBar = injector.get(SnackBarService);
-        this.dialog = injector.get(MatDialog);
-        this.gridApiUrl = '';
         this.dataHasPaginate = true;
         this.dataTableHasSearch = true;
         this.setDataTableAllPage = false;
@@ -53,11 +46,7 @@ export class BaseModel {
         }
     }
 
-    init()
-    {
-
-    }
-
+    /**Begin CRUD */
     add(form, onSuccess: (response) => void, onError = null) {
 
     }
@@ -88,28 +77,36 @@ export class BaseModel {
 
     }
 
-    setGridStyle() {
-    }
-
     delete(urlparam = null, onSuccess: (response) => void = null, onError: (data) => void = null) {
     }
 
+    /**End CRUD */
+
+    // call this method in data table for set custome style sheet for each model
+    setGridStyle() {
+    }
+
+    // call this method in data table for set custome style sheet for each row in each model
     setGridRowStyle(data) {
       return null;
     }
 
+    // call this method in data table for e4nable seletable data table
     public allowSelect() {
         return false;
     }
 
+    // call this method in data table show ing ad use from edit button
     public allowEditGrid() {
         return false;
     }
 
+    // call this method in data table show ing ad use from delete button
     public allowDeleteGrid() {
         return false;
     }
 
+    // initialize data table for showing data
     public initDataTable() {
         this.dataSource = [];
         this.dataSource.push(1);

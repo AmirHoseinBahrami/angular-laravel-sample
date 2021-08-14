@@ -1,5 +1,6 @@
 import {Injector} from "@angular/core";
 
+/* This model fo inject service to base model */
 export class AppInjector {
 
     private static injector: Injector;

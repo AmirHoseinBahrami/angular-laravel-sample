@@ -5,6 +5,7 @@ import {UIService} from './ui.service';
 import {SnackBarService} from './snack-bar.service';
 import {MatDialog} from '@angular/material/dialog';
 
+/**Http layer for controllin crud */
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',

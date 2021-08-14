@@ -32,7 +32,7 @@ import { IDataTableHeader } from 'src/app/interfaces/data-table/data-table';
     styleUrls: ['./data-table.component.scss']
 })
 
-export class DataTableComponent implements OnInit, AfterViewInit, OnChanges, DoCheck {
+export class DataTableComponent implements OnInit, AfterViewInit, OnChanges {
     @Input() model: any;
     @Input() hasFooter: boolean = false;
     @Input() cardBackgroundTransparent: boolean = false;
@@ -52,7 +52,6 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnChanges, DoC
     selectColumns = [];
     iterableDiffer;
     url;
-    textBoxButtonModel: any[] = [];
     pageSizeOptions = [5, 10, 20];
     selection = new SelectionModel<any>(true, []);
 
@@ -69,12 +68,8 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnChanges, DoC
     }
 
     ngOnInit() {
-        this.paginator._intl = getPersianPaginatorIntl();
-        this.textBoxButtonModel = new Array(this.model.dataSource.length);
-        if (this.model.gridApiUrl)
-            this.url = this.model.apiUrl + this.model.gridApiUrl;
-        else
-            this.url = this.model.apiUrl;
+        this.paginator._intl = getPersianPaginatorIntl(); // for persain elemnts of data table
+        this.url = this.model.apiUrl;
         this.displayedColumns.push('id');
         this.displayedColumns = this.displayedColumns.concat(this.model.columns.map(x => x.field));
         this.ds = new MatTableDataSource(this.model.dataSource);
@@ -84,25 +79,17 @@ export class DataTableComponent implements OnInit, AfterViewInit, OnChanges, DoC
             this.modifiedColumns.push('edit');
         if (this.model.allowSelect())
             this.selectColumns.push('select');
-
         this.displayedColumns = this.selectColumns.concat(this.displayedColumns.concat(this.modifiedColumns));
     }
 
-    ngDoCheck() {
-        let changes = this.iterableDiffer.diff(this.model.dataSource);
-        if (changes) {
-            this.ds = new MatTableDataSource(this.model.dataSource);
-            this.changeDetectorRefs.detectChanges();
-
-        }
-    }
-
+    //when every change detect
     ngOnChanges(changes: SimpleChanges): void {
         this.model.dataSource.slice();
         this.changeDetectorRefs.detectChanges();
         this.ds = new MatTableDataSource(this.model.dataSource);
     }
 
+    //when change sorting or paginate
     ngAfterViewInit() {
       this.ds = new MatTableDataSource(this.model.dataSource);
           this.sort.sortChange.subscribe(() => {

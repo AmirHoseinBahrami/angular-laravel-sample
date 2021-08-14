@@ -3,6 +3,7 @@ import { BaseModel } from './base.model';
 import {Validators} from '@angular/forms';
 import {AppConstantModel} from './app-constant.model';
 
+/*Lesson model*/
 export class LessonModel extends BaseModel {
     title: string;
     score: number;

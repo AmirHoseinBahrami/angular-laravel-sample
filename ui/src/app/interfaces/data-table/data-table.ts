@@ -1,3 +1,5 @@
+/** data table column interface that call from backend or can be generate here*/
+
 
 export interface IDataTableHeader {
   id : number,
