@@ -1,2 +1,2 @@
-# bugloos
-bugloos
+# angular laravel
+sample
